@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -6,17 +8,16 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
-      appBar: AppBar(
-        title: Text("Quiz for AGL"),
-      ),
-      body: Center(
-        child: Container(
-          child: Text("My Name is Omkar Nikam"),
-           
+        appBar: AppBar(
+          title: Text("Hi! My Name is Omkar"),
         ),
-      ),
-      drawer:Drawer()
-    );
+        body: Center(
+          child: Container(
+              child: Image.asset(
+            "assets/images/my_image.jpeg",
+            fit: BoxFit.cover,
+          )),
+        ),
+        drawer: Drawer());
   }
 }
