@@ -13,7 +13,18 @@ class _LoginPageState extends State<LoginPage> {
 
   final _formKey = GlobalKey<FormState>();
 
-  moveToHome(BuildContext context) {}
+  moveToHome(BuildContext context) async {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        changeButton = true;
+      });
+      await Future.delayed(Duration(seconds: 1));
+      await Navigator.pushNamed(context, MyRoutes.homeRoute);
+      setState(() {
+        changeButton = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +61,11 @@ class _LoginPageState extends State<LoginPage> {
                         hintText: "Enter Username",
                         labelText: "Username",
                       ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Username cannot be empty";
+                        }
+                      },
                       onChanged: (value) {
                         name = value;
                         setState(() {});
@@ -61,18 +77,20 @@ class _LoginPageState extends State<LoginPage> {
                         hintText: "Enter Password",
                         labelText: "Password",
                       ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Password cannot be empty";
+                        }
+                        if (value.length < 8) {
+                          return "Password length should be atleast 8 ";
+                        }
+                      },
                     ),
                     SizedBox(
                       height: 40.0,
                     ),
                     InkWell(
-                      onTap: () async {
-                        setState(() {
-                          changeButton = true;
-                        });
-                        await Future.delayed(Duration(seconds: 1));
-                        Navigator.pushNamed(context, MyRoutes.homeRoute);
-                      },
+                      onTap: () => moveToHome(context),
                       child: AnimatedContainer(
                         duration: Duration(seconds: 1),
                         width: changeButton ? 50 : 150,
@@ -97,13 +115,6 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ],
-                  // ElevatedButton(
-                  //   child: Text("Login"),
-                  //   style: TextButton.styleFrom(minimumSize: Size(100, 40)),
-                  //   onPressed: () {
-                  //     Navigator.pushNamed(context, MyRoutes.homeRoute);
-                  //   },
-                  // )
                 ),
               ),
             ],
